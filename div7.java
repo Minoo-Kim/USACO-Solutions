@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 public class div7 {
 	public static void main(String[] args) throws IOException
 	{
+		// note: timed out on the 10th case
 		BufferedReader f = new BufferedReader(new FileReader("div7.in"));
 		int n = Integer.valueOf(f.readLine());
 		// find prefix array
