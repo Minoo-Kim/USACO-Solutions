@@ -66,7 +66,7 @@ public class angry {
 	}
 	
 	
-	// search for the minimum index in an array above limit, given min index
+	// search for the minimum value in an array above limit
 	public static long search(long[] list, long limit) { 
 		int min = 0;
 		int max = list.length-1; // index
@@ -81,7 +81,7 @@ public class angry {
 				min = mid +1;
 			}
 		}
-		return list[ans]; // returns max index that satisfies list[index] <= limit. 
+		return list[ans];
 	}
 
 }
