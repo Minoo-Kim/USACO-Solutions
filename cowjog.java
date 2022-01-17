@@ -14,28 +14,23 @@ public class cowjog {
 		BufferedReader f = new BufferedReader(new FileReader("cowjog.in"));
 		PrintWriter out = new PrintWriter(new FileWriter("cowjog.out"));
 		StringTokenizer in = new StringTokenizer(f.readLine());
-		int n = Integer.valueOf(in.nextToken());
-		int t = Integer.valueOf(in.nextToken());
+		long n = Long.valueOf(in.nextToken());
+		long t = Long.valueOf(in.nextToken());
 		ArrayList<Long> pos= new ArrayList<Long>();
 		for(int i=0;i<n;i++) {
 			StringTokenizer in2 = new StringTokenizer(f.readLine());
-			pos.add((long) (Integer.valueOf(in2.nextToken())+Integer.valueOf(in2.nextToken())*t));
+			pos.add(Long.valueOf(in2.nextToken())+Long.valueOf(in2.nextToken())*t);
 		}
-
-		int groups = n;
-		boolean merged = true;
-		while(merged) {
-			merged = false;
-			for(int i=0;i<pos.size()-1;i++) {
-				if(pos.get(i)>pos.get(i+1)) {
-					pos.set(i, pos.get(i+1));
-					groups-=1;
-					merged=true;
-				}
+		int groups=1;
+		for(int i=pos.size()-1;i>0;i--) {
+			if(pos.get(i)<=pos.get(i-1)) {
+				pos.set(i-1, pos.get(i));
+			}
+			else {
+				groups+=1;
 			}
 		}
-		Set<Long> res = new LinkedHashSet<Long>(pos);
-		out.print(res.size());
+		out.println(groups);
 		out.close();
 	}
 }
