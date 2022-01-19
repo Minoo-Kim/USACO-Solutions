@@ -72,7 +72,7 @@ public class cowroute {
 	            		prices[val.to]=prices[currentNode]+cost;
 	            		route.get(val.to).route=val.airline;
 		        		route.get(val.to).flights=route.get(currentNode).flights+1;
-	            	}	  
+	            	}
 	            }
 	        }
 	        unsettledNodes.remove(new Integer(currentNode));
@@ -82,12 +82,14 @@ public class cowroute {
 	    if(prices[b]==Long.MAX_VALUE) {
 	    	out.println(noSol+" "+noSol);
 	    }
-	    out.println(prices[b]+" "+route.get(b).flights);
+	    else {
+		    out.println(prices[b]+" "+route.get(b).flights);
+	    }
 	    out.close();
 	}
 	static int getMinIndex(ArrayList<Integer> unsettledNodes, long[] distances) {
 		int minIndex=Integer.MAX_VALUE;
-		long dist = Integer.MAX_VALUE;
+		long dist = Long.MAX_VALUE;
 		// visit all unvisited nodes
 		for(int node : unsettledNodes) {
 			if(dist>distances[node]) {
