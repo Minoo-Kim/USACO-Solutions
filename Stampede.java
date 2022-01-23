@@ -3,7 +3,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.StringTokenizer;
 import java.util.*;
 
 public class Stampede {
@@ -11,57 +10,55 @@ public class Stampede {
 		BufferedReader f = new BufferedReader(new FileReader("stampede.in"));
 		PrintWriter out = new PrintWriter(new FileWriter("stampede.out"));
 		int n = Integer.valueOf(f.readLine());
-		Cow[] cows = new Cow[n];
+		ArrayList<Event> events = new ArrayList<Event>();
 		for(int i=0;i<n;i++) {
 			StringTokenizer in = new StringTokenizer(f.readLine());
 			int x=Integer.valueOf(in.nextToken());
 			int y=Integer.valueOf(in.nextToken());
 			int speed=Integer.valueOf(in.nextToken());
-			cows[i] = new Cow(x,y,speed,(-1-x)*speed, (-1-x)*speed+speed);
+			events.add(new Event(-x*speed-speed,y));
+			events.add(new Event(-x*speed,-y));
 		}
-		ArrayList<Data> data = new ArrayList<Data>();
-		Arrays.sort(cows);
-		for(Cow cow : cows) {
-			for(Cow cow2 : cows) {
-				if()
+		// sort events by time to perform line sweep 
+		Collections.sort(events);
+        PriorityQueue<Integer> active = new PriorityQueue<>();
+	    Set<Integer> seen = new HashSet<Integer>();
+		for(int i=0;i<events.size();i++) {
+			int counter=-1;
+			// add or remove everything at the time interval 
+			for(int j=i;j<events.size()&&events.get(i).t==events.get(j).t;j++) {
+				counter+=1;
+				if(events.get(j).y>0) {
+					active.add(events.get(j).y);
+				}
+				else {
+					active.remove(-events.get(j).y);
+				}
 			}
+			if(!active.isEmpty()) {
+				seen.add(active.peek());
+			}
+			i+=counter;
 		}
-		
-		out.println(n-data.size());
-		out.close();
-		
-		
-		// start at leftmost
-		// store y coor and end point in arraylist
-		// go through arraylist and if y coor is lower and end point is before own end point --> subtract 1 
-		
+			
+		out.println(seen.size());
+		out.close();	
 	}
 	
-	static class Data{
-		private int end;
-		private int y;
-		public Data(int end, int y) {
-			this.end=end;
-			this.y=y;
+	static class Event implements Comparable<Event>{
+		int t;
+		int y;
+		public Event(int t, int y) {
+			this.t=t;
+		this.y=y;
 		}
-	}
-	
-	static class Cow implements Comparable<Cow>{
-		private int start;
-		private int end;
-		private int x;
-		private int y;
-		private int speed;
-		
-		public Cow(int x, int y, int speed, int start, int end) {
-			this.x=x;
-			this.y=y;
-			this.speed=speed;
-			this.start = start;
-			this.end = end;
-		}
-		public int compareTo(Cow o) {
-			return this.start - o.start;
-		}
+		public int compareTo(Event o) {
+			if(this.t==o.t) {
+				return this.y-o.y;
+			}
+			else {
+				return this.t-o.t;
+			}
+		}		
 	}
 }
