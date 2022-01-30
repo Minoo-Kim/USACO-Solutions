@@ -10,7 +10,7 @@ import java.util.*;
 
 public class closest {
 	public static void main(String[] args) throws IOException {
-		BufferedReader f = new BufferedReader(new FileReader("2.in"));
+		BufferedReader f = new BufferedReader(new InputStreamReader(System.in));
 		PrintWriter out = new PrintWriter(new BufferedWriter (new OutputStreamWriter(System.out)));
 		StringTokenizer in = new StringTokenizer(f.readLine());
 		int k = Integer.valueOf(in.nextToken());
@@ -19,12 +19,14 @@ public class closest {
 		Patches[] patches = new Patches[k];
 		for(int i=0;i<k;i++) {	
 			StringTokenizer in2 = new StringTokenizer(f.readLine());
-			patches[i] = new Patches(Long.valueOf(in2.nextToken()),Long.valueOf(in2.nextToken()));
+			patches[i] = new Patches(Integer.valueOf(in2.nextToken()),Long.valueOf(in2.nextToken()));
 		}
-		long[] blocks = new long[m];
+		int[] blocks = new int[m];
 		for(int i=0;i<m;i++) {
-			blocks[i]=Long.valueOf(f.readLine());
+			blocks[i]=Integer.valueOf(f.readLine());
 		}
+		Arrays.sort(patches);
+		Arrays.sort(blocks);
 		ArrayList<Long> vals = new ArrayList<Long>();
 		
 		// add last and the first patches
@@ -99,12 +101,17 @@ public class closest {
 		out.close();	
 	}
 	
-	static class Patches {
-		long pos;
+	static class Patches implements Comparable<Patches>{
+		int pos;
 		long taste;
-		public Patches(long pos, long taste) {
+		public Patches(int pos, long taste) {
 			this.pos=pos;
 			this.taste=taste;
 		}
+		@Override
+		public int compareTo(Patches o) {
+			return pos-o.pos;
+		}
+		
 	}
 }
